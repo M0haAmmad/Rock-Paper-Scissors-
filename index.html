@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Rock Paper Scissors</title>
+    <meta name="description"
+        content="A stunning 3D digital Rock, Paper, Scissors game with mixed vibrant colors and modern aesthetics.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <div class="container">
+
+        <section id="mode-screen" class="screen active">
+            <h1 class="title" data-text="ROCK PAPER SCISSORS">ROCK PAPER SCISSORS</h1>
+            <h2 class="subtitle">3D DIGITAL EDITION</h2>
+
+            <div class="mode-options">
+                <button class="btn-3d" onclick="selectMode('1p')">
+                    <span class="icon">👤</span>
+                    <span class="text">1 PLAYER<small>vs Computer</small></span>
+                </button>
+                <div class="divider">OR</div>
+                <button class="btn-3d" onclick="selectMode('2p')">
+                    <span class="icon">👥</span>
+                    <span class="text">2 PLAYERS<small>Local Multiplayer</small></span>
+                </button>
+            </div>
+        </section>
+
+        <section id="setup-screen" class="screen">
+            <h2 class="setup-title">ENTER DIGITAL ARENA</h2>
+            <div class="glass-form">
+                <div class="input-group">
+                    <label for="player1-name">PLAYER 1 NAME</label>
+                    <input type="text" id="player1-name" placeholder="Player 1 Name" autocomplete="off" maxlength="15">
+                </div>
+                <div class="input-group" id="player2-input-group">
+                    <label for="player2-name">PLAYER 2 NAME</label>
+                    <input type="text" id="player2-name" placeholder="Player 2 Name" autocomplete="off" maxlength="15">
+                </div>
+                <button class="btn-action pulse" onclick="startGame()">START BATTLE</button>
+                <button class="btn-text" onclick="goBack('mode')">← BACK</button>
+            </div>
+        </section>
+
+
+        <section id="game-screen" class="screen">
+
+            <div class="scoreboard glass-panel">
+                <div class="player-score">
+                    <h3 id="p1-display-name">P1</h3>
+                    <div class="matches-won badge" id="p1-matches">WINS: 0</div>
+                    <div class="score" id="p1-score">0</div>
+                </div>
+                <div class="vs">VS</div>
+                <div class="player-score right">
+                    <h3 id="p2-display-name">CPU</h3>
+                    <div class="matches-won badge" id="p2-matches">WINS: 0</div>
+                    <div class="score" id="p2-score">0</div>
+                </div>
+            </div>
+
+
+            <div class="arena-stage perspective-stage">
+
+
+                <div class="player-side" id="p1-side">
+                    <div class="status-indicator">YOUR TURN</div>
+                    <div class="card-container p1-cards">
+                        <div class="rps-card" data-choice="rock" onclick="makeChoice(1, 'rock')">
+                            <div class="card-inner">
+                                <div class="card-front">✊</div>
+                                <div class="card-back">ROCK</div>
+                            </div>
+                        </div>
+                        <div class="rps-card" data-choice="paper" onclick="makeChoice(1, 'paper')">
+                            <div class="card-inner">
+                                <div class="card-front">✋</div>
+                                <div class="card-back">PAPER</div>
+                            </div>
+                        </div>
+                        <div class="rps-card" data-choice="scissors" onclick="makeChoice(1, 'scissors')">
+                            <div class="card-inner">
+                                <div class="card-front">✌️</div>
+                                <div class="card-back">SCISSORS</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-choice" id="p1-selected">
+                        <div class="battle-card">?</div>
+                    </div>
+                </div>
+
+
+                <div id="battle-announcement" class="hidden">
+                    <div class="result-text" id="result-text">DRAW!</div>
+                    <button class="btn-action small" onclick="nextRound()">NEXT ROUND</button>
+                </div>
+
+
+                <div class="player-side" id="p2-side">
+                    <div class="status-indicator" id="p2-status">WAITING...</div>
+                    <div class="card-container p2-cards">
+                        <div class="rps-card" data-choice="rock" onclick="makeChoice(2, 'rock')">
+                            <div class="card-inner">
+                                <div class="card-front">✊</div>
+                                <div class="card-back">ROCK</div>
+                            </div>
+                        </div>
+                        <div class="rps-card" data-choice="paper" onclick="makeChoice(2, 'paper')">
+                            <div class="card-inner">
+                                <div class="card-front">✋</div>
+                                <div class="card-back">PAPER</div>
+                            </div>
+                        </div>
+                        <div class="rps-card" data-choice="scissors" onclick="makeChoice(2, 'scissors')">
+                            <div class="card-inner">
+                                <div class="card-front">✌️</div>
+                                <div class="card-back">SCISSORS</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-choice" id="p2-selected">
+                        <div class="battle-card">?</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-text reset-btn" onclick="resetGame()">MAIN MENU</button>
+        </section>
+
+
+        <section id="match-over-screen" class="screen match-over-screen">
+            <div class="glass-form match-glass">
+                <div class="trophy-icon">🏆</div>
+                <h2 id="match-winner-text" class="glow-text">WINNER</h2>
+                <div id="match-stats-text" class="match-stats">Final Score: 0 - 0</div>
+                <div class="total-wins-dashboard">
+                    <div class="win-stat" id="p1-total-wins">P1 WINS: 0</div>
+                    <div class="win-stat" id="p2-total-wins">CPU WINS: 0</div>
+                </div>
+                <button class="btn-action golden-btn pulse" onclick="resetMatch()">PLAY AGAIN</button>
+                <button class="btn-text mt-2" onclick="resetGame()">MAIN MENU</button>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
